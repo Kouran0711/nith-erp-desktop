@@ -29,11 +29,42 @@ jobs:
         run: |
           $tagVersion = "${{ github.ref_name }}".TrimStart("v")
           $packageVersion = (Get-Content package.json | ConvertFrom-Json).version
+
           if ($tagVersion -ne $packageVersion) {
             throw "A tag v$tagVersion não corresponde à versão $packageVersion do package.json."
           }
 
-      - name: Criar instalador e publicar no GitHub Releases
-        run: npx electron-builder --win nsis --publish always
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Gerar instalador
+        run: npx electron-builder --win nsis --publish never
+
+      - name: Conferir arquivos gerados
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path dist -Recurse
+
+          $exe = Get-ChildItem "dist/Nith-ERP-Setup-*.exe"
+          $blockmap = Get-ChildItem "dist/Nith-ERP-Setup-*.exe.blockmap"
+          $latest = Get-Item "dist/latest.yml"
+
+          if (-not $exe) {
+            throw "O instalador EXE não foi gerado."
+          }
+
+          if (-not $blockmap) {
+            throw "O arquivo blockmap não foi gerado."
+          }
+
+          if (-not $latest) {
+            throw "O arquivo latest.yml não foi gerado."
+          }
+
+      - name: Publicar arquivos no GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Nith ERP ${{ github.ref_name }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            dist/Nith-ERP-Setup-*.exe
+            dist/Nith-ERP-Setup-*.exe.blockmap
+            dist/latest.yml
