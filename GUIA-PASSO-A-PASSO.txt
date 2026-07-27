@@ -1,0 +1,52 @@
+NITH ERP — INSTALADOR E ATUALIZAÇÃO AUTOMÁTICA
+
+1. Crie um repositório PÚBLICO no GitHub chamado:
+   nith-erp-desktop
+
+2. Envie para ele todos os arquivos desta pasta.
+
+3. Para criar a primeira versão, confirme que o package.json possui:
+   "version": "1.0.0"
+
+4. No computador, abra o terminal dentro da pasta do projeto e execute:
+   git init
+   git add .
+   git commit -m "Primeiro instalador da Nith ERP"
+   git branch -M main
+   git remote add origin https://github.com/Kouran0711/nith-erp-desktop.git
+   git push -u origin main
+   git tag v1.0.0
+   git push origin v1.0.0
+
+5. Abra no GitHub:
+   Actions > Gerar e publicar instalador
+
+6. Quando concluir, abra:
+   Releases
+
+7. Baixe e instale:
+   Nith-ERP-Setup-1.0.0.exe
+
+PARA LANÇAR UMA NOVA VERSÃO
+
+1. Edite o package.json:
+   "version": "1.0.1"
+
+2. Execute:
+   git add package.json
+   git commit -m "Versão 1.0.1"
+   git push origin main
+   git tag v1.0.1
+   git push origin v1.0.1
+
+3. Aguarde a GitHub Action.
+
+4. O aplicativo instalado detectará a versão 1.0.1, baixará e mostrará:
+   Reiniciar e atualizar
+
+IMPORTANTE
+
+- A tag e a versão do package.json precisam ser iguais.
+- Exemplo correto: package 1.0.1 + tag v1.0.1.
+- Não apague o latest.yml dos Releases.
+- Não publique a atualização como Draft ou Pre-release.

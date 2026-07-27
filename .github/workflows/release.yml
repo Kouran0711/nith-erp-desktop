@@ -1,0 +1,39 @@
+name: Gerar e publicar instalador
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Baixar o projeto
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Conferir versão da tag
+        shell: pwsh
+        run: |
+          $tagVersion = "${{ github.ref_name }}".TrimStart("v")
+          $packageVersion = (Get-Content package.json | ConvertFrom-Json).version
+          if ($tagVersion -ne $packageVersion) {
+            throw "A tag v$tagVersion não corresponde à versão $packageVersion do package.json."
+          }
+
+      - name: Criar instalador e publicar no GitHub Releases
+        run: npx electron-builder --win nsis --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

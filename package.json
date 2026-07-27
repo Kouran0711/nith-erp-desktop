@@ -1,0 +1,74 @@
+{
+  "name": "nith-erp-desktop",
+  "version": "1.0.0",
+  "description": "Aplicativo desktop oficial da Nith ERP",
+  "author": "Nith",
+  "license": "UNLICENSED",
+  "main": "main.cjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kouran0711/nith-erp-desktop.git"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis --publish never",
+    "release": "electron-builder --win nsis --publish always"
+  },
+  "dependencies": {
+    "electron-updater": "6.8.9"
+  },
+  "devDependencies": {
+    "electron": "43.2.0",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.nith.erp",
+    "productName": "Nith ERP",
+    "asar": true,
+    "compression": "maximum",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.cjs",
+      "splash.html",
+      "logo.png",
+      "icon.png",
+      "package.json"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "Nith-ERP-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Nith ERP",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "installerLanguages": ["pt_BR"],
+      "language": "1046",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Kouran0711",
+        "repo": "nith-erp-desktop",
+        "releaseType": "release"
+      }
+    ]
+  }
+}
