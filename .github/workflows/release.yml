@@ -42,8 +42,8 @@ jobs:
         run: |
           Get-ChildItem -Path dist -Recurse
 
-          $exe = Get-ChildItem "dist/Nith-ERP-Setup-*.exe"
-          $blockmap = Get-ChildItem "dist/Nith-ERP-Setup-*.exe.blockmap"
+          $exe = Get-Item "dist/Nith-ERP-Setup.exe"
+          $blockmap = Get-Item "dist/Nith-ERP-Setup.exe.blockmap"
           $latest = Get-Item "dist/latest.yml"
 
           if (-not $exe) {
@@ -65,6 +65,6 @@ jobs:
           generate_release_notes: true
           fail_on_unmatched_files: true
           files: |
-            dist/Nith-ERP-Setup-*.exe
-            dist/Nith-ERP-Setup-*.exe.blockmap
+            dist/Nith-ERP-Setup.exe
+            dist/Nith-ERP-Setup.exe.blockmap
             dist/latest.yml
